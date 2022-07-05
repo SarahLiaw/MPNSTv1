@@ -5,3 +5,4 @@ Sarah Liaw - SURF 2022
 Completed first version of code for delfi+diagnosis ML model
 using AdaBoost Classifier and UMAP. Trying to think of methods
 to visualize how to compare different dimensionality reduction techniques.
+I also need to push a couple more files.
