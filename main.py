@@ -17,7 +17,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import umap.umap_ as umap
 
-data_path = '/home/sarahl/PycharmProjects/MPNST_v1/delfi+diagnosis.csv'
+# Change path if not running locally.
+data_path = '/home/sarahl/PycharmProjects/MPNST_v1/data_v1/delfi+diagnosis.csv'
 data = pd.read_csv(data_path)
 
 data = data.iloc[:, 1:-1]
