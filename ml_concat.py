@@ -33,7 +33,7 @@ print(X.head())
 sxc = StandardScaler()
 X = sxc.fit_transform(X)
 
-embedding = umap.UMAP(n_neighbors=8, min_dist=0.3, metric='correlation').fit_transform(X)
+embedding = umap.UMAP(n_neighbors=10, min_dist=0.6, metric='correlation').fit_transform(X)
 
 train_X, test_X, train_y, test_y = train_test_split(X, binary_encoded_y, random_state=1)
 
