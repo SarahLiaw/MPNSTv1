@@ -34,14 +34,14 @@ sxc = StandardScaler()
 X = sxc.fit_transform(X)
 
 embedding = umap.UMAP(n_neighbors=8, min_dist=0.3, metric='correlation').fit_transform(X)
-# Need to figure out a way to plot how it looks dimensionally.
 
 train_X, test_X, train_y, test_y = train_test_split(X, binary_encoded_y, random_state=1)
 
 classifier = AdaBoostClassifier(
-    DecisionTreeClassifier(max_depth=1),
-    n_estimators=200
+    DecisionTreeClassifier(max_depth=5),
+    n_estimators=700
 )
+
 classifier.fit(train_X, train_y)
 
 predictions = classifier.predict(test_X)
