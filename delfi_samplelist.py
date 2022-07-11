@@ -23,6 +23,7 @@ data = pd.read_csv(data_path)
 
 data = data.iloc[:, 1:-1]
 # Cross-checking some stuff here.
+
 print(data.dtypes)
 print(data.isnull().sum())
 
@@ -38,11 +39,9 @@ print(X.head())
 
 sxc = StandardScaler()
 X = sxc.fit_transform(X)
-print(X.shape)
 
 embedding = umap.UMAP(n_neighbors=8, min_dist=0.3, metric='correlation').fit_transform(X)
-# I need to figure out a way to plot how it looks dimensionally.
-
+# Need to figure out a way to plot how it looks dimensionally.
 
 train_X, test_X, train_y, test_y = train_test_split(X, binary_encoded_y, random_state=1)
 
