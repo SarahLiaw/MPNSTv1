@@ -31,7 +31,7 @@ print(y.shape)
 X = data.iloc[:, 1:]
 print(X.head())
 
-scaler=StandardScaler()
+scaler = StandardScaler()
 scaler.fit(X)
 scaled_data=scaler.transform(X)
 

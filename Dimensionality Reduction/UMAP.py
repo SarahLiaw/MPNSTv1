@@ -50,8 +50,7 @@ import matplotlib.pyplot as plt
 # plt.legend()
 #
 
-
-plt.figure(figsize=(10,10))
+plt.figure(figsize=(30, 30))
 plt.scatter(embedding[:,0], embedding[:,1],
 
             edgecolor='none',
