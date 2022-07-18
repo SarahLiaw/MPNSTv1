@@ -53,3 +53,5 @@ plt.xlabel('First principle component')
 plt.ylabel('Second principle component')
 plt.show(block=True)
 plt.interactive(False)
+
+# add labels and colours: https://stackoverflow.com/questions/45333733/plotting-pca-output-in-scatter-plot-whilst-colouring-according-to-to-label-pytho
