@@ -21,4 +21,5 @@ SURF log hours.
 **07/22** Did not update through the week. Check SURF log hours.
 
 **07/19/22** Did additional visualizations (visualizations section
-completed).
+completed). Grid search (classification report, confusion matrix) on 
+PCA.
