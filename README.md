@@ -20,5 +20,5 @@ SURF log hours.
 
 **07/22** Did not update through the week. Check SURF log hours.
 
-**07/19/22** Did visualizations with colorings and labels. Did
-heatmap graph.
+**07/19/22** Did additional visualizations (visualizations section
+completed).

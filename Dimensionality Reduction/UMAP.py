@@ -11,7 +11,7 @@ import seaborn as sns
 import umap.umap_ as umap
 
 # Change path if not running locally.
-data_path = '/home/sarahl/PycharmProjects/MPNST_v1/data_v1/MPNST_v1_concat.csv'
+data_path = '/home/sarahl/PycharmProjects/MPNST_v1/data_v1/MPNST_concat_no_outliers.csv'
 data = pd.read_csv(data_path)
 
 data = data.iloc[:, 1:-1]
@@ -49,13 +49,16 @@ import matplotlib.pyplot as plt
 #
 # plt.legend()
 #
+label_colour_dict = {'plexiform': 'orange', 'healthy': 'green', 'mpnst': 'red'}
+
+#color vector creation
+
+cvec = [label_colour_dict[label] for label in y]
 
 plt.figure(figsize=(30, 30))
-plt.scatter(embedding[:,0], embedding[:,1],
-
-            edgecolor='none',
-            alpha=0.80,
-            s=56)
+plt.scatter(embedding[:,0], embedding[:,1], c=cvec,
+            edgecolor=['none'],
+            alpha=0.50)
 plt.axis('off')
 plt.show(block=True)
 plt.interactive(False)
