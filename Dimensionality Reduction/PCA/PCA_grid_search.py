@@ -78,8 +78,14 @@ grid = GridSearchCV(SVC(), param_grid, refit=True, cv=5)
 
 grid.fit(X_train, y_train)
 print(grid.best_params_)
+
 from sklearn.metrics import confusion_matrix, classification_report
+
 y_pred = grid.predict(X_test)
 print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
 print("\n")
 print("Classification Report:\n",classification_report(y_test, y_pred))
+print(y_test)
+
+
+#0: health, 1: mpnst, 2: plexiform
