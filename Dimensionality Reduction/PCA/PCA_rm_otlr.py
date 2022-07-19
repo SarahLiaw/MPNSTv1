@@ -1,4 +1,4 @@
-
+# using removed outliers, heatmap, n comp
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 
 # Change path if not running locally.
-data_path = '/home/sarahl/PycharmProjects/MPNST_v1/data_v1/MPNST_v1_concat.csv'
+data_path = '/home/sarahl/PycharmProjects/MPNST_v1/data_v1/MPNST_concat_no_outliers.csv'
 data = pd.read_csv(data_path)
 id = list(data['ID'])
 id_concat = [i[3:] for i in id]
@@ -27,7 +27,7 @@ scaler = StandardScaler()
 scaler.fit(X)
 scaled_data = scaler.transform(X)
 
-pca = PCA(n_components=2)
+pca = PCA(n_components=3)
 pca.fit(scaled_data)
 x_pca = pca.transform(scaled_data)
 
@@ -48,5 +48,13 @@ for lib in id_concat:
 
 plt.xlabel('First principle component')
 plt.ylabel('Second principle component')
+# plt.show(block=True)
+# plt.interactive(False)
+
+print(pca.components_)
+import seaborn as sns
+plt.figure(figsize=(12,6))
+df_comp = pd.DataFrame(pca.components_,columns=list(data.keys())[1:])
+sns.heatmap(df_comp,cmap='plasma',)
 plt.show(block=True)
 plt.interactive(False)

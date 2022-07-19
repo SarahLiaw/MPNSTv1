@@ -17,3 +17,8 @@ ID -> Diagnosis -> Tumor Fraction -> DELFI -> ichor.
 
 **07/12/22** Visualizing dimensionality reduction methods. Check
 SURF log hours.
+
+**07/22** Did not update through the week. Check SURF log hours.
+
+**07/19/22** Did visualizations with colorings and labels. Did
+heatmap graph.

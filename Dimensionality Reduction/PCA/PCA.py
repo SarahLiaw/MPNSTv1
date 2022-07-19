@@ -12,7 +12,7 @@ import umap.umap_ as umap
 from sklearn.preprocessing import MinMaxScaler
 
 # Change path if not running locally.
-data_path = '/home/sarahl/PycharmProjects/MPNST_v1/data_v1/MPNST_v1_concat.csv'
+data_path = '/data_v1/MPNST_v1_concat.csv'
 data = pd.read_csv(data_path)
 
 data = data.iloc[:, 1:-1]
