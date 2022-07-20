@@ -3,7 +3,6 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
 import matplotlib.pyplot as plt
-
 from sklearn.decomposition import PCA
 
 # Change path if not running locally.
@@ -86,6 +85,5 @@ print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
 print("\n")
 print("Classification Report:\n",classification_report(y_test, y_pred))
 print(y_test)
-
 
 #0: health, 1: mpnst, 2: plexiform
