@@ -26,7 +26,7 @@ scaler = StandardScaler()
 scaler.fit(X)
 scaled_data = scaler.transform(X)
 
-pca = PCA(n_components=3)
+pca = PCA(n_components=26)
 pca.fit(scaled_data)
 x_pca = pca.transform(scaled_data)
 

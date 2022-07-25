@@ -62,7 +62,7 @@ plt.title('Scree Plot: All n PCs')
 plt.show()
 
 
-pca = PCA(n_components=3)
+pca = PCA(n_components=26)
 pca.fit_transform(x_train_ps)
 
 percent_var = np.round(pca.explained_variance_ratio_*100, decimals=1)
