@@ -7,6 +7,7 @@ from sklearn.preprocessing import StandardScaler
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.manifold import TSNE
 import seaborn as sns
 import umap.umap_ as umap
 from sklearn.preprocessing import MinMaxScaler
