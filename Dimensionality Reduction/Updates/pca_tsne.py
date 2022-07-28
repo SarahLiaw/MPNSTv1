@@ -38,7 +38,7 @@ print(pca_scores.shape)
 
 
 time_start = time.time()
-tsne = TSNE(n_components=3, verbose=0, perplexity=30, n_iter=300)
+tsne = TSNE(n_components=3, verbose=0, perplexity=50, n_iter=750)
 tsne_pca_results = tsne.fit_transform(pca_scores)
 tsne_df = pd.DataFrame({'X' : tsne_pca_results [:,0],
                        'Y' : tsne_pca_results [:,1],
