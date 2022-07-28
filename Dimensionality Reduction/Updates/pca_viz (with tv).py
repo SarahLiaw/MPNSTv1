@@ -14,7 +14,7 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 data_path = '/home/sarahl/PycharmProjects/MPNST_v1/data_v1/MPNST_concat_no_outliers.csv'
 data = pd.read_csv(data_path)
 X = data.iloc[:, 2:]
-target = data['Diagnosis'].to_numpy()
+target = data.Diagnosis
 print(X.head(2))
 print(target)
 X_st = StandardScaler().fit_transform(X)

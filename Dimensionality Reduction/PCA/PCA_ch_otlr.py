@@ -52,6 +52,7 @@ plt.ylabel('Second principle component')
 # plt.interactive(False)
 
 print(pca.components_)
+# pca.components_ is the set of all eigenvectors (aka loadings) for your projection space (one eigenvector for each principal component). Once you have the eigenvectors using pca.components_, here's how to get eigenvalues.
 import seaborn as sns
 plt.figure(figsize=(12,6))
 df_comp = pd.DataFrame(pca.components_,columns=list(data.keys())[1:])
