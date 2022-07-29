@@ -1,13 +1,10 @@
 import pandas as pd
 import warnings
 from sklearn.preprocessing import StandardScaler
-warnings.simplefilter(action='ignore', category=FutureWarning)
 
 
-def read_data(pathname):
-    data_path = pathname
+def read_data(data_path):
     data = pd.read_csv(data_path)
-
     data = data.iloc[:, 1:-1]  # Removes Library_ID, so that data ranges from Diagnosis->TF->DELFI->ichor.
     return data
 

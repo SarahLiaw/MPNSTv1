@@ -18,7 +18,7 @@ def heatmap(pca, hm_label, data):
     # pca_components = pca.components_
     plt.figure(figsize=(12, 6))
     df_comp = pd.DataFrame(pca.components_, columns=list(data.keys())[1:])
-    sns.heatmap(df_comp, annot = hm_label, cmap='plasma')
+    sns.heatmap(df_comp, annot=hm_label, cmap='plasma')
     plt.show(block=True)
     plt.interactive(False)
 
