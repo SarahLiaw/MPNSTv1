@@ -18,7 +18,6 @@ pca = PCA(n_components=n_comp)
 pca.fit(scaled_data)
 x_pca = pca.transform(scaled_data)
 
-
 diagnosis_count_chart(data)
 
 heatmap(pca, False, data)

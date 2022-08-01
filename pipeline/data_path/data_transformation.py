@@ -1,6 +1,6 @@
 import pandas as pd
 import warnings
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, LabelEncoder
 
 
 def read_data(data_path):
@@ -32,3 +32,11 @@ def standard_scaling(x):
     :return: Transformed/Standardized features of x.
     """
     return StandardScaler().fit_transform(x)
+
+def encode_target(y):
+    label_encoder = LabelEncoder()
+    encoded_y = label_encoder.fit_transform(y)
+    label_encoder_name_mapping = dict(zip(label_encoder.classes_, label_encoder.transform(label_encoder.classes_)))
+    print("Mapping of Label Encoded Classes", label_encoder_name_mapping, sep="\n")
+    # print("Label Encoded Target Variable", encoded_y, sep="\n")
+    return encoded_y
