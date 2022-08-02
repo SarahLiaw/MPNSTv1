@@ -142,3 +142,25 @@ def tsne_visuals(tsne_df):
     plt.figure(figsize=(10, 10))
     sns.scatterplot(x="X", y="Y", hue='classification', legend='full', data=tsne_df)
     plt.show()
+
+
+def umap_visuals(target, umap_embedding):
+    """
+
+    :param target: y values (encoded or not)
+    :param umap_embedding: emebedding from umap.
+    :return:
+    """
+    label_colour_dict = {'plexiform': 'orange', 'healthy': 'green', 'mpnst': 'red'}
+
+    # color vector creation
+
+    cvec = [label_colour_dict[label] for label in target]
+
+    plt.figure(figsize=(30, 30))
+    plt.scatter(umap_embedding[:, 0], umap_embedding[:, 1], c=cvec,
+                edgecolor=['none'],
+                alpha=0.50)
+    plt.axis('off')
+    plt.show(block=True)
+    plt.interactive(False)
