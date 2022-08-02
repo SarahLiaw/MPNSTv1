@@ -1,5 +1,4 @@
 import pandas as pd
-import warnings
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 
 
@@ -26,12 +25,21 @@ def get_y(data):
     return data.Diagnosis
 
 
-def standard_scaling(x):
+def standard_scaling(x_test):
     """
-    :param x: Any x (could be train/test)
+    :param x_test: For any training X
     :return: Transformed/Standardized features of x.
     """
-    return StandardScaler().fit_transform(x)
+    return StandardScaler().fit_transform(x_test)
+
+
+def standard_scaling_pred(x_pred):
+    """
+    :param x_pred: For any testing X.
+    :return: Transformed/Standardized features of x.
+    """
+    return StandardScaler().fit(x_pred)
+
 
 def encode_target(y):
     label_encoder = LabelEncoder()

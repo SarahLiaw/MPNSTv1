@@ -22,6 +22,7 @@ def heatmap(pca, hm_label, data):
     plt.show(block=True)
     plt.interactive(False)
 
+
 def scree_plot_all_PCs(pca):
     """
     :param pca:Fitted PCA from pca = PCA().
@@ -38,8 +39,10 @@ def scree_plot_all_PCs(pca):
     plt.show(block=True)
     plt.interactive(False)
 
+
 def scree_plot_some_PCs(pca):
     return None
+
 
 def biplot_cluster(X, target, n):
     """
@@ -98,3 +101,44 @@ def pc_scatter(data_path, X):
     plt.ylabel('Second principle component')
     plt.show(block=True)
     plt.interactive(False)
+
+
+def myplot(score, target, coeff, labels=None):
+    """
+    Reference material: https://towardsdatascience.com/pca-clearly-explained-how-when-why-to-use-it-and-feature-importance-a-guide-in-python-7c274582c37e
+    scores: projected features and coeff:  elements of the eigenvetors
+    :param score: x_pca first 2 projected features.
+    :param target: encoded y.
+    :param coeff: elements of the eigenvectors.
+    :param labels:... (should be column names)
+    :return:
+    """
+    xs = score[:, 0]
+    ys = score[:, 1]
+    n = coeff.shape[0]
+    scalex = 1.0 / (xs.max() - xs.min())
+    scaley = 1.0 / (ys.max() - ys.min())
+    plt.scatter(xs * scalex, ys * scaley, c=target)
+    for i in range(n):
+        plt.arrow(0, 0, coeff[i, 0], coeff[i, 1], color='r', alpha=0.5)
+        # if labels is None:
+        #     plt.text(coeff[i,0]* 1.15, coeff[i,1] * 1.15, "Var"+str(i+1), color = 'g', ha = 'center', va = 'center')
+        # else:
+        #     plt.text(coeff[i,0]* 1.15, coeff[i,1] * 1.15, labels[i], color = 'g', ha = 'center', va = 'center')
+    plt.xlim(-1, 1)
+    plt.ylim(-1, 1)
+    plt.xlabel("PC{}".format(1))
+    plt.ylabel("PC{}".format(2))
+    plt.grid()
+    plt.show(block=True)
+    plt.interactive(False)
+
+
+def tsne_visuals(tsne_df):
+    """
+    :param tsne_df: the tsne pd.dataframe.
+    :return: None. Scatter plot of sample distribution.
+    """
+    plt.figure(figsize=(10, 10))
+    sns.scatterplot(x="X", y="Y", hue='classification', legend='full', data=tsne_df)
+    plt.show()

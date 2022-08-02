@@ -1,6 +1,6 @@
 from sklearn.linear_model import LogisticRegression
-# https://www.statology.org/leave-one-out-cross-validation-in-python/
-# logistic regression using PCA
+
+
 from sklearn.decomposition import PCA
 from sklearn.linear_model import LogisticRegression
 import sys
@@ -36,7 +36,7 @@ acc = cross_val_score(log,X_pca,y,cv=5,scoring='accuracy',n_jobs=-1)
 
 print(mean(absolute(scoresMEAN)))
 print(acc)
-#https://fixexception.com/scikit-learn/multi-class-must-be-in-ovo-ovr/
+
 scoresSQUARED = cross_val_score(log, X_pca, encode_y, scoring='neg_mean_squared_error',
                          cv=cv, n_jobs=-1)
 

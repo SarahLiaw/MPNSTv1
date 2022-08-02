@@ -1,25 +1,26 @@
 # MPNSTv1
 Sarah Liaw - SURF 2022
 
-**07/05/22** Set up relevant csv files.
-Completed first version of code for delfi+diagnosis ML model
-using AdaBoost Classifier and UMAP. Trying to think of methods
-to visualize how to compare different dimensionality reduction techniques.
-I also need to push a couple more files.
+Main directory: pipeline.
 
-**07/06/22** Had meeting (check SURF log hours for details).
+data_path
+- 
+- data_transformation: reading the data, transforming X using standard scalars, label
+encoders on y (target: *strings* to *floats*).
 
-**07/07/22, 07/08/22** Check SURF log hours.
+dim_red
+- 
+- Dimensionality reduction methods (PCA, UMAP, t-SNE).
 
-**07/11/22** For last week's progress, check SURF log hours for
-details. Concatenated files, so it goes in order of:
-ID -> Diagnosis -> Tumor Fraction -> DELFI -> ichor.
+model
+- 
+- logreg1: logistic regression with LASSO penalty using a LOOCV to check.
 
-**07/12/22** Visualizing dimensionality reduction methods. Check
-SURF log hours.
+visualizations
+- 
+- def_visualizations: functions for visualizations including biplot, heatmap, barchart, variance explained graph etc.
+- make_visualizations: running files to create the visualizations.
 
-**07/22** Did not update through the week. Check SURF log hours.
-
-**07/19/22** Did additional visualizations (visualizations section
-completed). Grid search (classification report, confusion matrix) on 
-PCA.
+visuals
+- 
+- 

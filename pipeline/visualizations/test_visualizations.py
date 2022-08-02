@@ -9,14 +9,14 @@ data = read_data(path)
 
 X = get_X(data)
 y = get_y(data)
+encode_y = encode_target(y)
 
 n_comp = 26
 
 scaled_data = standard_scaling(X)
 
 pca = PCA(n_components=n_comp)
-pca.fit(scaled_data)
-x_pca = pca.transform(scaled_data)
+x_pca = pca.fit_transform(scaled_data)
 
 diagnosis_count_chart(data)
 
@@ -24,5 +24,6 @@ heatmap(pca, False, data)
 
 pc_scatter(path, X)
 
-biplot_cluster(X, y, n_comp)
+#biplot_cluster(X, y, n_comp)
 
+myplot(x_pca[:,0:2],encode_y, np.transpose(pca.components_[0:2, :]))
