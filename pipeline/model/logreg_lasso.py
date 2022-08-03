@@ -1,14 +1,9 @@
-from sklearn.linear_model import LogisticRegression
-
-
 from sklearn.decomposition import PCA
 from sklearn.linear_model import LogisticRegression
-import sys
-from sklearn.model_selection import train_test_split
 from sklearn.model_selection import LeaveOneOut
 from sklearn.model_selection import cross_val_score
 from numpy import *
-
+import sys
 from pipeline.data_path.data_transformation import *
 
 sys.path.insert(0, '/home/sarahl/PycharmProjects/MPNST_v1/pipeline/data_path')
@@ -34,10 +29,10 @@ scoresMEAN = cross_val_score(log, X_pca, encode_y, scoring='neg_mean_absolute_er
                          cv=cv, n_jobs=-1)
 acc = cross_val_score(log,X_pca,y,cv=5,scoring='accuracy',n_jobs=-1)
 
-print(mean(absolute(scoresMEAN)))
-print(acc)
+print("Mean absolute error:", mean(absolute(scoresMEAN)))
+print("Accuracy: ", acc)
 
 scoresSQUARED = cross_val_score(log, X_pca, encode_y, scoring='neg_mean_squared_error',
                          cv=cv, n_jobs=-1)
 
-print(sqrt(mean(absolute(scoresSQUARED))))
+print("Mean squared error: ", sqrt(mean(absolute(scoresSQUARED))))

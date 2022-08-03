@@ -10,11 +10,14 @@ encoders on y (target: *strings* to *floats*).
 
 dim_red
 - 
-- Dimensionality reduction methods (PCA, UMAP, t-SNE).
+- pca: pca reduction.
+- tsne
+- umap_main: umap reduction (does not currently work due to umap module imports issues with directory.)
 
 model
 - 
 - logreg1: logistic regression with LASSO penalty using a LOOCV to check.
+- adaboost: adaboost with base classifier (80% for some n-estimator).
 
 visualizations
 - 
