@@ -6,7 +6,7 @@ import seaborn as sns
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
-data_path = '/home/sarahl/PycharmProjects/MPNST_v1/data_v1/MPNST_concat_no_outliers.csv'
+data_path = '/home/sarahl/PycharmProjects/MPNST_v1/data_v1/MPNST_v1_rm2otlr.csv'
 data = pd.read_csv(data_path)
 data = data.iloc[:, 1:-1]
 print(data.keys())
@@ -62,7 +62,7 @@ plt.title('Scree Plot: All n PCs')
 plt.show()
 
 
-pca = PCA(n_components=26)
+pca = PCA(n_components=29)
 pca.fit_transform(x_train_ps)
 
 percent_var = np.round(pca.explained_variance_ratio_*100, decimals=1)
@@ -72,7 +72,7 @@ plt.bar(x=range(1,len(percent_var)+1), height=percent_var, tick_label=labels)
 
 plt.xlabel('Principal Components')
 plt.ylabel('Variation %')
-plt.title('Scree Plot: n=3 PC')
+plt.title('Scree Plot: n = 29 PC')
 plt.show()
 
 explained = pca.explained_variance_ratio_

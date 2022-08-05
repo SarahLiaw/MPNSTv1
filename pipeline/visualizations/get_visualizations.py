@@ -11,18 +11,21 @@ X = get_X(data)
 y = get_y(data)
 encode_y = encode_target(y)
 
-n_comp = 26
+n_comp = 29
 
 scaled_data = standard_scaling(X)
 
-pca = PCA(n_components=n_comp)
+pca = PCA()
 x_pca = pca.fit_transform(scaled_data)
+pca.fit_transform(scaled_data)
 
 diagnosis_count_chart(data)
 
 heatmap(pca, False, data)
 
 pc_scatter(path, X)
+
+scree_plot_all_PCs(pca)
 
 #biplot_cluster(X, y, n_comp)
 
