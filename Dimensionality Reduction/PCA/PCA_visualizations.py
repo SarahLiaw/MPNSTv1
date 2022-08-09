@@ -46,7 +46,6 @@ print(np.mean(x_train_ps))
 print(np.std(x_train_ps))
 print(eg)
 
-
 from sklearn.decomposition import PCA
 pca = PCA()
 pca.fit_transform(x_train_ps)
@@ -74,6 +73,9 @@ plt.xlabel('Principal Components')
 plt.ylabel('Variation %')
 plt.title('Scree Plot: n = 29 PC')
 plt.show()
+
+
+
 
 explained = pca.explained_variance_ratio_
 print(explained)
