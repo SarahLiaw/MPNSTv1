@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 arm_df = pd.read_csv('/home/sarahl/PycharmProjects/MPNST_v1/data_v1/arm_frag.tsv', sep='\t')
 
 library_id_set = set(arm_df['library'])
-print(library_id_set)
+#print(library_id_set)
 
 mpnst_df = pd.read_csv('/home/sarahl/PycharmProjects/MPNST_v1/data_v1/MPNST_v1_rm2otlr.csv')
 mpnst_ids = sorted(set(mpnst_df['ID']))
@@ -14,14 +14,14 @@ mpnst_ids = sorted(set(mpnst_df['ID']))
 for id in library_id_set:
     if id not in mpnst_ids:
         arm_df.drop(arm_df.index[arm_df['library'] == id], inplace=True)
-        print(id)
+       # print(id)
 
-print(arm_df)
+#print(arm_df)
 check = sorted(set(arm_df['library']))
 
-print(check)
-print(mpnst_ids)
-print(check == mpnst_ids)
+#print(check)
+#print(mpnst_ids)
+#print(check == mpnst_ids)
 
 # basically removed all the rows of the data for the library-ids that are not relevant in the above.
 
@@ -37,6 +37,14 @@ print(check == mpnst_ids)
 
 # if chr are the same in the library, find the average for each chrom
 
+# for each fold:
+#    split data
+#    conduct PCA on the 90% used for training
+#    pick the number of components
+#    fit linear regression
+#    predict the 10% held out
+# end:
+
 
 # code for PCA over the delfi fragment ratios computed and select the minimum number of PCs to get 90% of the variance.
 
@@ -46,16 +54,16 @@ data = data.iloc[:, 1:-1]
 
 y = data.Diagnosis
 x = data.iloc[:, 1:]
-print(x)
-print(y)
-print(data.columns)
-print(data.keys())
-print(data.head())
-print(data.corr())
+#print(x)
+#print(y)
+# print(data.columns)
+# print(data.keys())
+# print(data.head())
+# print(data.corr())
 
 
 
-from sklearn.model_selection import cross_validate
+from sklearn.model_selection import cross_validate, StratifiedKFold, KFold
 
 
 def cross_validation(model, _X, _y, _cv=5):
@@ -150,11 +158,35 @@ label_encoder = LabelEncoder()
 encoded_y = label_encoder.fit_transform(y)
 label_encoder_name_mapping = dict(zip(label_encoder.classes_, label_encoder.transform(label_encoder.classes_)))
 print("Mapping of Label Encoded Classes", label_encoder_name_mapping, sep="\n")
-print(encoded_y)
+#print(encoded_y)
 
 sc = StandardScaler()
 x_scale = sc.fit_transform(x)
 pca = PCA()
+
+#kf =KFold(n_splits=5, shuffle=True, random_state=1)
+kf = KFold(n_splits=5)
+counter =1
+for train_index, test_index in kf.split(x, y):
+     print("TRAIN:", train_index, "TEST:", test_index)
+     X_train, X_test = x_scale[train_index], x_scale[test_index]
+     y_train, y_test = encoded_y[train_index], encoded_y[test_index]
+     pca = PCA()
+     pca_X = pca.fit_transform(X_train)
+
+     explained = pca.explained_variance_ratio_
+     print(explained)
+
+     cum = np.cumsum(np.round(explained, decimals=3))
+     cum_perc = cum * 100
+     pc_df = pd.DataFrame(['PC1', 'PC2', 'PC3'], columns=['PC'])
+     explained_df = pd.DataFrame(explained, columns=['Explained variance'])
+     cum_df = pd.DataFrame(cum_perc, columns=['Cumulative variance (in %)'])
+     total_explained = pd.concat([pc_df, explained_df, cum_df], axis=1)
+     print(total_explained)
+
+     counter+=1
+
 
 pca.fit_transform(x_scale)
 percent_var = np.round(pca.explained_variance_ratio_*100, decimals=1)
