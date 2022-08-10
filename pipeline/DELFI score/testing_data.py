@@ -149,7 +149,6 @@ def cross_validation(model, _X, _y, _cv=5):
         plt.grid(True)
         plt.show()
 
-# https://machinelearningmastery.com/how-to-configure-k-fold-cross-validation/
 from sklearn.decomposition import PCA
 
 from sklearn.preprocessing import StandardScaler, LabelEncoder
