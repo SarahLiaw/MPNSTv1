@@ -59,8 +59,8 @@ x = data.iloc[:, 1:]
 # print(x.shape)
 # print(.shape)
 # print(x.keys())
-# #print(x)
-# #print(y)
+print(x)
+print(y)
 # # print(data.columns)
 # print(arm_df.keys())
 # print(data.head())
@@ -109,46 +109,46 @@ def cross_validation(model, _X, _y, _cv=5):
             "Validation F1 scores": results['test_f1'],
             "Mean Validation F1 Score": results['test_f1'].mean()
             }
+def plot_result(x_label, y_label, plot_title, train_data, val_data):
+    '''Function to plot a grouped bar chart showing the training and validation
+      results of the ML model in each fold after applying K-fold cross-validation.
+     Parameters
+     ----------
+     x_label: str,
+        Name of the algorithm used for training e.g 'Decision Tree'
 
-    def plot_result(x_label, y_label, plot_title, train_data, val_data):
-        '''Function to plot a grouped bar chart showing the training and validation
-          results of the ML model in each fold after applying K-fold cross-validation.
-         Parameters
-         ----------
-         x_label: str,
-            Name of the algorithm used for training e.g 'Decision Tree'
+     y_label: str,
+        Name of metric being visualized e.g 'Accuracy'
+     plot_title: str,
+        This is the title of the plot e.g 'Accuracy Plot'
 
-         y_label: str,
-            Name of metric being visualized e.g 'Accuracy'
-         plot_title: str,
-            This is the title of the plot e.g 'Accuracy Plot'
+     train_result: list, array
+        This is the list containing either training precision, accuracy, or f1 score.
 
-         train_result: list, array
-            This is the list containing either training precision, accuracy, or f1 score.
+     val_result: list, array
+        This is the list containing either validation precision, accuracy, or f1 score.
+     Returns
+     -------
+     The function returns a Grouped Barchart showing the training and validation result
+     in each fold.
+    '''
 
-         val_result: list, array
-            This is the list containing either validation precision, accuracy, or f1 score.
-         Returns
-         -------
-         The function returns a Grouped Barchart showing the training and validation result
-         in each fold.
-        '''
+    # Set size of plot
+    plt.figure(figsize=(12, 6))
+    labels = ["1st Fold", "2nd Fold", "3rd Fold", "4th Fold", "5th Fold"]
+    X_axis = np.arange(len(labels))
+    ax = plt.gca()
+    plt.ylim(0.40000, 1)
+    plt.bar(X_axis - 0.2, train_data, 0.4, color='blue', label='Training')
+    plt.bar(X_axis + 0.2, val_data, 0.4, color='red', label='Validation')
+    plt.title(plot_title, fontsize=30)
+    plt.xticks(X_axis, labels)
+    plt.xlabel(x_label, fontsize=14)
+    plt.ylabel(y_label, fontsize=14)
+    plt.legend()
+    plt.grid(True)
+    plt.show()
 
-        # Set size of plot
-        plt.figure(figsize=(12, 6))
-        labels = ["1st Fold", "2nd Fold", "3rd Fold", "4th Fold", "5th Fold"]
-        X_axis = np.arange(len(labels))
-        ax = plt.gca()
-        plt.ylim(0.40000, 1)
-        plt.bar(X_axis - 0.2, train_data, 0.4, color='blue', label='Training')
-        plt.bar(X_axis + 0.2, val_data, 0.4, color='red', label='Validation')
-        plt.title(plot_title, fontsize=30)
-        plt.xticks(X_axis, labels)
-        plt.xlabel(x_label, fontsize=14)
-        plt.ylabel(y_label, fontsize=14)
-        plt.legend()
-        plt.grid(True)
-        plt.show()
 
 from sklearn.decomposition import PCA
 
@@ -160,12 +160,25 @@ label_encoder_name_mapping = dict(zip(label_encoder.classes_, label_encoder.tran
 print("Mapping of Label Encoded Classes", label_encoder_name_mapping, sep="\n")
 #print(encoded_y)
 
+# sc = StandardScaler()
+# x_scale = sc.fit_transform(x)
+# print(x_scale)
+# print(x_scale.shape)
+
+x_array = np.array(x)
+x_array = x_array.T
+print(x_array)
 sc = StandardScaler()
-x_scale = sc.fit_transform(x)
-print(x_scale)
-print(x_scale.shape)
+x_scale = sc.fit_transform(x_array)
+x_scale = x_scale.T
 #kf =KFold(n_splits=5, shuffle=True, random_state=1)
 kf = KFold(n_splits=5)
+
+#scale and then add it to x
+# for i in :
+#     sc = StandardScaler()
+#     x = sc.fit_transform()
+
 
 for train_index, test_index in kf.split(x_scale, y):
      print("TRAIN:", train_index, "TEST:", test_index)
@@ -185,33 +198,13 @@ for train_index, test_index in kf.split(x_scale, y):
      cum_df = pd.DataFrame(cum_perc, columns=['Cumulative variance (in %)'])
      total_explained = pd.concat([pc_df, explained_df, cum_df], axis=1)
      print(total_explained)
+     percent_var = np.round(pca.explained_variance_ratio_*100, decimals=1)
+     # calc of variation % of each PC
 
-
-pca = PCA()
-pca.fit(x)
-explained = pca.explained_variance_ratio_
-print(explained)
-
-cum = np.cumsum(np.round(explained, decimals=3))
-cum_perc = cum * 100
-pc_df = pd.DataFrame(['PC1', 'PC2', 'PC3'], columns=['PC'])
-explained_df = pd.DataFrame(explained, columns=['Explained variance'])
-cum_df = pd.DataFrame(cum_perc, columns=['Cumulative variance (in %)'])
-total_explained = pd.concat([pc_df, explained_df, cum_df], axis=1)
-print(total_explained)
-percent_var = np.round(pca.explained_variance_ratio_*100, decimals=1)
-# calc of variation % of each PC
-
-
-labels = ['PC'+str(p) for p in range(1,len(percent_var)+1)]
-f, ax = plt.subplots(figsize=(23, 5))
-plt.bar(x=range(1,len(percent_var)+1), height=percent_var, tick_label=labels)
-plt.xlabel('Principal Components')
-plt.ylabel('Variation %')
-plt.title('Scree Plot: All n PCs')
-plt.show()
-
-
-# NOTE THAT INSTEAD of doing standard scalar over all features, do it over each sample since there are multiple chromosomes
-
-# refer to the mathios paper (OR SLACK) for more information.
+     labels = ['PC' + str(p) for p in range(1, len(percent_var) + 1)]
+     f, ax = plt.subplots(figsize=(23, 5))
+     plt.bar(x=range(1, len(percent_var) + 1), height=percent_var, tick_label=labels)
+     plt.xlabel('Principal Components')
+     plt.ylabel('Variation %')
+     plt.title('Scree Plot: All n PCs')
+     plt.show()
