@@ -17,17 +17,9 @@ ratio_path = '/home/sarahl/PycharmProjects/MPNST_v1/data_v1/delfi_ratio_w_diagno
 z_df = pd.read_csv(z_score_path)
 ratio_df = pd.read_csv(ratio_path)
 
-
-# print(sorted(list(z_df['library'])))
-# print(sorted(list(ratio_df['ID'])))
-# print(sorted(list(z_df['library'])) == sorted(list(ratio_df['ID'])))
-
 z_df = z_df.iloc[:, 1:]
 
 ratio_df_no_index = ratio_df.iloc[:, 1:]
-print(z_df.shape)
-print(ratio_df.shape)
-print(z_df.head())
 y = ratio_df_no_index.Diagnosis
 x = ratio_df_no_index.iloc[:, 1:]
 
@@ -72,25 +64,34 @@ from sklearn.model_selection import cross_val_score
 
 log = LogisticRegression(penalty='l1', class_weight='balanced', solver='liblinear', random_state=42)
 cv = RepeatedKFold(n_splits=5, n_repeats=10, random_state=1)
-#scores = cross_val_score(log, log_reg_df, encoded_y, scoring='accuracy', cv=cv, n_jobs=-1)
-#print(scores.shape)
-
-
-
-
-# cv = RepeatedKFold(n_splits=5, n_repeats=10, random_state=1)
-# scores = cross_val_score(log, log_reg_df, encoded_y, scoring='accuracy', cv=cv, n_jobs=-1)
+#scores = cross_val_score(log, log_reg_df, encoded_y, scoring='neg_mean_absolute_error', cv=cv, n_jobs=-1)
+# scores = abs(scores)
 # print(scores)
 # print(scores.shape)
-# print('Accuracy: %.3f (%.3f)' % (np.mean(scores), np.std(scores)))
 
 
-cv_results = cross_validate(log, log_reg_df, encoded_y, cv=cv, return_estimator=True)
-counter = 1
-for model in cv_results['estimator']:
-    print(model.coef_)
-    print (counter)
-    print(np.average(model.coef_, axis=1))
 
-    counter += 1
+# evaluate a model with a given number of repeats
+def evaluate_model(X, y, repeats):
+	# prepare the cross-validation procedure
+	cv = RepeatedKFold(n_splits=5, n_repeats=repeats, random_state=1)
+	# create model
+	model = LogisticRegression()
+	# evaluate model
+	scores = cross_val_score(model, X, y, scoring='accuracy', cv=cv, n_jobs=-1)
+	return scores
 
+# create dataset
+# configurations to test
+repeats = range(5,11)
+results = list()
+for r in repeats:
+	# evaluate using a given number of repeats
+	scores = evaluate_model(log_reg_df, encoded_y, r)
+	# summarize
+	print('>%d mean=%.4f se=%.3f' % (r, np.mean(scores), np.std(scores)))
+	# store
+	results.append(scores)
+# plot the results
+plt.boxplot(results, labels=[str(r) for r in repeats], showmeans=True)
+plt.show()
