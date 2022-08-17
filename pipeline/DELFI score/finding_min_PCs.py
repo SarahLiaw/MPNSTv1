@@ -39,26 +39,21 @@ for train_index, test_index in kf.split(x_scale, y):
      print("TRAIN:", train_index, "TEST:", test_index)
 
      X_train, X_test = x_scale[train_index], x_scale[test_index]
-     y_train, y_test = encoded_y[train_index], encoded_y[test_index]
 
      pca = PCA()
      pca.fit_transform(X_train)
 
      explained = pca.explained_variance_ratio_
-     print(explained)
 
-     cum = np.cumsum(np.round(explained, decimals=3))
-     cum_perc = cum * 100
+     cum_perc = np.cumsum(np.round(explained, decimals=3)) * 100
      pc_df = pd.DataFrame(['PC1', 'PC2', 'PC3'], columns=['PC'])
      explained_df = pd.DataFrame(explained, columns=['Explained variance'])
      cum_df = pd.DataFrame(cum_perc, columns=['Cumulative variance (in %)'])
      total_explained = pd.concat([pc_df, explained_df, cum_df], axis=1)
-     print(total_explained)
 
      for i in range(len(cum_perc)):
          if cum_perc[i] >= 90.0:
              minimum_PC = min(minimum_PC, i + 1)
-             print("The minimum number of PC’s needed for 90% of the variance is: PC", i + 1, "at cum_perc of", cum_perc[i])
              break
 
      percent_var = np.round(pca.explained_variance_ratio_*100, decimals=1)
@@ -80,5 +75,3 @@ print("Therefore, the minimum number of PCs that will be used for log reg after 
 # The idea here is that we’re drastically reducing the number of input features to the model: if we used
 # the raw delfi+ichor data, we’d have a few thousand features, which will make it hard for models to converge
 # with our limited cohort size.
-
-

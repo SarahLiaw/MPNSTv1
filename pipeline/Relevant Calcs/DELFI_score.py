@@ -1,94 +1,3 @@
-import pandas as pd
-
-import numpy as np
-
-import matplotlib.pyplot as plt
-from sklearn.decomposition import PCA
-
-from sklearn.preprocessing import StandardScaler, LabelEncoder
-
-
-
-z_score_path = '/home/sarahl/PycharmProjects/MPNST_v1/data_v1/arm_frag_edited_rc.csv'
-ratio_path = '/home/sarahl/PycharmProjects/MPNST_v1/data_v1/delfi_ratio_w_diagnosis_rm2otlr.csv'
-
-#clf = sklearn.linear_model.LogisticRegression(penalty='l1',n_jobs =-1,solver='liblinear',C=1).fit(X, y).
-
-z_df = pd.read_csv(z_score_path)
-ratio_df = pd.read_csv(ratio_path)
-
-
-# print(sorted(list(z_df['library'])))
-# print(sorted(list(ratio_df['ID'])))
-# print(sorted(list(z_df['library'])) == sorted(list(ratio_df['ID'])))
-
-z_df = z_df.iloc[:, 1:]
-
-ratio_df_no_index = ratio_df.iloc[:, 1:]
-print(z_df.shape)
-print(ratio_df.shape)
-print(z_df.head())
-y = ratio_df_no_index.Diagnosis
-x = ratio_df_no_index.iloc[:, 1:]
-
-label_encoder = LabelEncoder()
-encoded_y = label_encoder.fit_transform(y)
-label_encoder_name_mapping = dict(zip(label_encoder.classes_, label_encoder.transform(label_encoder.classes_)))
-print("Mapping of Label Encoded Classes", label_encoder_name_mapping, sep="\n")
-
-x_array = np.array(x)
-x_array = x_array.T
-sc = StandardScaler()
-x_scale = sc.fit_transform(x_array)
-x_scale = x_scale.T
-
-n_comp = 24
-pca = PCA(n_components=n_comp)
-x_pca = pca.fit_transform(x_scale)
-
-explained = pca.explained_variance_ratio_
-#print(explained)
-
-cum = np.cumsum(np.round(explained, decimals=3))
-cum_perc = cum * 100
-pc_df = pd.DataFrame(['PC1', 'PC2', 'PC3'], columns=['PC'])
-explained_df = pd.DataFrame(explained, columns=['Explained variance'])
-cum_df = pd.DataFrame(cum_perc, columns=['Cumulative variance (in %)'])
-total_explained = pd.concat([pc_df, explained_df, cum_df], axis=1)
-#print(total_explained)
-
-print(x_pca.shape)
-
-columns = ['pca_%i' % i for i in range(n_comp)]
-df_pca = pd.DataFrame(x_pca, columns=columns)
-print(df_pca.head())
-
-log_reg_df = pd.concat([df_pca, z_df], axis=1, join='inner')
-print(log_reg_df)
-print(log_reg_df.shape)
-from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import LeaveOneOut, RepeatedKFold, cross_validate
-from sklearn.model_selection import cross_val_score
-
-log = LogisticRegression(penalty='l1', class_weight='balanced', solver='liblinear', random_state=42)
-cv = RepeatedKFold(n_splits=5, n_repeats=10, random_state=1)
-
-cv_results = cross_validate(log, log_reg_df, encoded_y, cv=cv, return_estimator=True)
-counter = 1
-for model in cv_results['estimator']:
-    print(model.coef_)
-    print (counter)
-    print(np.average(model.coef_, axis=1))
-
-    counter += 1
-
-
-
-
-
-
-
-
 
 import pandas as pd
 import numpy as np
@@ -135,15 +44,32 @@ x_mplx_sc_df = pd.DataFrame(x_mplx_sc, columns=list(mpnst_plex_df.columns[40:-1]
 #combine this with the z_score
 #final_mplx_df = pd.concat([mplx_id, y_mplx, x_mplx_z, x_mplx_sc_df], axis=1, join='inner')
 # so 2:41 gives you z score
-final_mplx_df = pd.concat([y_mplx, x_mplx_z, x_mplx_sc_df], axis=1, join='inner')
+final_mplx_df = pd.concat([mplx_id, y_mplx, x_mplx_z, x_mplx_sc_df], axis=1, join='inner')
 
 #split a dataframe and use the pca components
 #for i in range(10):
 kf = KFold(n_splits=5)
-for train_index, test_index in kf.split(x_mplx_sc):
-    X_train, X_test = x_mplx_sc[train_index], x_mplx_sc[test_index]
+# X_np = np.array(final_mplx_df.iloc[:, 1:])
+# y_np = np.array(final_mplx_df.oloc[:, 0:1])
+
+for train_index, test_index in kf.split(final_mplx_df.iloc[2:]):
+    X_pca_parts = final_mplx_df.iloc[:, 41:]
+
+    # y_parts = final_mplx_df.iloc[:, 1:2]
+    # X_zscore = final_mplx_df.iloc[:, 2:41]
+    # idx = final_mplx_df.iloc[:, 0:1]
+
+    others_index = final_mplx_df.iloc[:, 0:41]
+
+    X_pca_train, X_pca_test = X_pca_parts.iloc[train_index], X_pca_parts.iloc[test_index]
+    # y_train, y_test = y_parts.iloc[train_index], y_parts.iloc[test_index]
+    # X_zscore_train, X_zscore_test = X_zscore.iloc[train_index], X_zscore.iloc[test_index]
+    # idx_train, idx_test = idx.iloc[train_index], idx.iloc[test_index]
+    others_index_train, others_index_test = others_index.iloc[train_index], others_index.iloc[test_index]
+
     pca = PCA()
-    x_pca = pca.fit_transform(X_train[:, 40:-1])
+
+    x_pca = pca.fit_transform(X_pca_train)
 
     explained = pca.explained_variance_ratio_
 
@@ -152,7 +78,7 @@ for train_index, test_index in kf.split(x_mplx_sc):
     explained_df = pd.DataFrame(explained, columns=['Explained variance'])
     cum_df = pd.DataFrame(cum_perc, columns=['Cumulative variance (in %)'])
     total_explained = pd.concat([pc_df, explained_df, cum_df], axis=1)
-    print(total_explained)
+
     minimum_PC = 100
     for i in range(len(cum_perc)):
         if cum_perc[i] >= 90.0:
@@ -167,14 +93,15 @@ for train_index, test_index in kf.split(x_mplx_sc):
     plt.xlabel('Principal Components')
     plt.ylabel('Variation %')
     plt.title('Scree Plot: All n PCs')
-    plt.show()
+    #plt.show()
 
-    print(minimum_PC)
-    # print(x_pca)
-    # print(x_pca[:, :minimum_PC].shape)
     columns = ['pca_%i' % i for i in range(minimum_PC)]
-    df_pca = pd.DataFrame(x_pca[:, :minimum_PC], columns=columns)
-    print(df_pca.head())
+    df_pca = pd.DataFrame(x_pca[:, :minimum_PC], columns=columns, index=others_index_train['library'].tolist())
+
+    others_index_train.set_index('library', inplace=True)
+    log_reg = pd.concat([others_index_train, df_pca], axis=1, join='inner')
+
+
 
 
 
