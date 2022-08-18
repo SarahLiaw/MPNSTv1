@@ -13,21 +13,21 @@ ratio_path = '/home/sarahl/PycharmProjects/MPNST_v1/data_v1/delfi_ratio_w_diagno
 z_df = pd.read_csv(z_score_path)  # Includes sorted library index and z-scores (total 39 features).
 ratio_df = pd.read_csv(ratio_path)  # Includes sorted library index, diagnosis, delfi values.
 
-mpnst_plex_df = pd.concat([z_df, ratio_df.iloc[:, 2:], ratio_df.Diagnosis], axis=1, join='inner')
+healthy_plex_df = pd.concat([z_df, ratio_df.iloc[:, 2:], ratio_df.Diagnosis], axis=1, join='inner')
 
-mpnst_plex_df = mpnst_plex_df[(mpnst_plex_df['Diagnosis'] == 'plexiform') | (mpnst_plex_df['Diagnosis'] == 'healthy')]
-print(mpnst_plex_df)
-mpnst_plex_df.set_index('library', inplace=True)
+healthy_plex_df = healthy_plex_df[(healthy_plex_df['Diagnosis'] == 'plexiform') | (healthy_plex_df['Diagnosis'] == 'healthy')]
+print(healthy_plex_df)
+healthy_plex_df.set_index('library', inplace=True)
 
-mpnst_index = list(mpnst_plex_df.index)
+healthy_index = list(healthy_plex_df.index)
 
-x_mplx_z = mpnst_plex_df.iloc[:, :39]
-x_mplx_pca = mpnst_plex_df.iloc[:, 39:-1]
+x_mplx_z = healthy_plex_df.iloc[:, :39]
+x_mplx_pca = healthy_plex_df.iloc[:, 39:-1]
 
-y_mplx_df = pd.DataFrame(encode_target(mpnst_plex_df['Diagnosis']),
-                         columns=['Diagnosis'], index=mpnst_index)
+y_mplx_df = pd.DataFrame(encode_target(healthy_plex_df['Diagnosis']),
+                         columns=['Diagnosis'], index=healthy_index)
 x_mplx_sc_df = pd.DataFrame(standard_scaling_delfi(x_mplx_pca),
-                            columns=list(mpnst_plex_df.columns[39:-1]), index=mpnst_index)
+                            columns=list(healthy_plex_df.columns[39:-1]), index=healthy_index)
 
 final_mplx_df = pd.concat([y_mplx_df, x_mplx_z, x_mplx_sc_df],
                           axis=1, join='inner')  # so iloc 2:41 gives you z score
